@@ -181,9 +181,6 @@ const Messages = () => {
                     placeholder="Escreva uma mensagem carinhosa para o casal..."
                     maxLength={600}
                   />
-                  <p className="text-xs text-gray-400 mt-1">
-                    Evite palavrões — mantemos o clima do amor no ar 💛
-                  </p>
                 </div>
 
                 <button

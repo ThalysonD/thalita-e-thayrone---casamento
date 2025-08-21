@@ -50,7 +50,7 @@ const ReceptionInfo = () => {
           {/* Image */}
           <div className="relative rounded-3xl overflow-hidden shadow-xl group">
             <img
-              src="https://images.pexels.com/photos/1616343/pexels-photo-1616343.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+              src="https://ysbaerftptetchetcljv.supabase.co/storage/v1/object/public/wedding-photos/WhatsApp%20Image%202025-08-19%20at%2011.52.54.jpeg"
               alt="Recepção de Casamento"
               className="w-full h-80 md:h-96 object-cover transition-transform duration-500 group-hover:scale-105"
             />

@@ -63,7 +63,7 @@ const DressCode = () => {
                                 <div className="space-y-3 font-['Playfair_Display'] text-gray-700">
                                     <p className="flex items-start gap-2">
                                         <span className="text-[#C9A66B] mt-1">•</span>
-                                        <span>Vestidos longos ou midi são bem-vindos</span>
+                                        <span>Vestidos longos</span>
                                     </p>
                                     <p className="flex items-start gap-2">
                                         <span className="text-[#C9A66B] mt-1">•</span>
