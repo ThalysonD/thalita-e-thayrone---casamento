@@ -55,6 +55,9 @@ const GiftList = () => {
   const [warnOpen, setWarnOpen] = useState(false);
   const [warnText, setWarnText] = useState('Por favor, use um nome apropriado 🙂');
 
+  // confirmação de cópia do PIX
+  const [copyConfirmOpen, setCopyConfirmOpen] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
@@ -95,11 +98,16 @@ const GiftList = () => {
   const pixKey = settings['pix_key'] ?? '';
   const presentListUrl = settings['present_list_url'] ?? '#';
 
-  const copyPix = () => {
+  const handleCopyPix = async () => {
     if (!pixKey) return;
-    navigator.clipboard.writeText(pixKey);
-    // se quiser modal aqui também, troque por setWarnText('Chave PIX copiada!'); setWarnOpen(true);
-    alert('Chave PIX copiada!');
+    try {
+      await navigator.clipboard.writeText(pixKey);
+      setCopyConfirmOpen(true);
+    } catch (e) {
+      console.error('Falha ao copiar PIX', e);
+      setWarnText('Não foi possível copiar a chave PIX. Copie manualmente, por favor.');
+      setWarnOpen(true);
+    }
   };
 
   // ordena por preço crescente; nulos no final
@@ -251,7 +259,7 @@ const GiftList = () => {
                   </code>
 
                   <button
-                    onClick={copyPix}
+                    onClick={handleCopyPix}
                     disabled={!pixKey}
                     className="p-2 text-[#C9A66B] hover:bg-[#C9A66B] hover:text-white rounded-lg transition-colors disabled:opacity-50"
                     title="Copiar chave PIX"
@@ -401,11 +409,23 @@ const GiftList = () => {
                   <CreditCard className="w-12 h-12 text-[#C9A66B] mx-auto mb-3" />
                   <p className="text-sm text-gray-600 mb-3">Use a chave PIX abaixo para presentear:</p>
                 </div>
+
+                {/* Linha com chave e botão copiar */}
                 <div className="flex items-center gap-2">
-                  <code className="bg-[#FDF6EE] px-3 py-2 rounded-lg text-sm border flex-1 select-all">
+                  <code className="bg-[#FDF6EE] px-3 py-2 rounded-lg text-sm border flex-1 select-all text-center">
                     {pixKey || '—'}
                   </code>
+                  <button
+                    onClick={handleCopyPix}
+                    disabled={!pixKey}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-[#C9A66B]/40 text-[#C9A66B] hover:bg-[#C9A66B] hover:text-white transition disabled:opacity-50"
+                    title="Copiar chave PIX"
+                  >
+                    <Copy className="w-4 h-4" />
+                    <span className="text-sm">Copiar</span>
+                  </button>
                 </div>
+
                 <label className="flex items-start gap-3 text-sm text-gray-700">
                   <input
                     type="checkbox"
@@ -490,6 +510,28 @@ const GiftList = () => {
           </div>
         </div>
       )}
+
+      {/* Modal: confirmação de cópia da chave PIX */}
+      <Modal
+        isOpen={copyConfirmOpen}
+        onClose={() => setCopyConfirmOpen(false)}
+        title="Chave PIX copiada!"
+      >
+        <div className="space-y-4 text-center">
+          <div className="mx-auto w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+            <Check className="w-7 h-7 text-green-600" />
+          </div>
+          <p className="font-['Playfair_Display'] text-gray-700">
+            A chave PIX foi copiada para a área de transferência. Você pode colar no seu app do banco e finalizar o presente. 💛
+          </p>
+          <button
+            onClick={() => setCopyConfirmOpen(false)}
+            className="mt-2 inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#C9A66B] text-white font-['Playfair_Display'] hover:bg-[#B8956A] transition"
+          >
+            Entendi
+          </button>
+        </div>
+      </Modal>
 
       {/* Modal de aviso (palavrões/erros) */}
       <Modal
