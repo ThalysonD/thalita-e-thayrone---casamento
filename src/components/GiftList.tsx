@@ -246,9 +246,10 @@ const GiftList = () => {
                 </div>
                 <p className="font-['Playfair_Display'] text-sm text-gray-600 mb-2">Chave PIX:</p>
                 <div className="flex items-center gap-2">
-                  <code className="bg-white px-3 py-2 rounded-lg text-sm border flex-1">
+                  <code className="bg-white px-3 py-0 rounded-lg text-sm border flex-1 min-w-[220px] text-center">
                     {pixKey || '—'}
                   </code>
+
                   <button
                     onClick={copyPix}
                     disabled={!pixKey}

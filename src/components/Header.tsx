@@ -5,8 +5,11 @@ import Modal from './Modal';
 import RSVPModal from './RSVPModal';
 import { useMusic } from '../hooks/MusicProvider'; // ajuste o path se usar alias @/
 
-const MUSIC_URL =
-  'https://ysbaerftptetchetcljv.supabase.co/storage/v1/object/public/wedding-playlist/Iris%20-%20Dean%20Lewis.mp3';
+const TRACKS = [
+  { title: 'Iris - Dean Lewis', url: 'https://ysbaerftptetchetcljv.supabase.co/storage/v1/object/public/wedding-playlist/Iris%20-%20Dean%20Lewis.mp3' },
+  { title: 'JVKE - her', url: 'https://ysbaerftptetchetcljv.supabase.co/storage/v1/object/public/wedding-playlist/JVKE%20-%20her.mp3' },
+  { title: 'Ed Sheeran - Thinking out Loud', url: 'https://ysbaerftptetchetcljv.supabase.co/storage/v1/object/public/wedding-playlist/SpotMate%20-%20Ed%20Sheeran%20-%20Thinking%20out%20Loud.mp3' },
+];
 
 const Header = () => {
   const [isRSVPModalOpen, setIsRSVPModalOpen] = useState(false);
@@ -14,7 +17,7 @@ const Header = () => {
 
   // --- player global
   const { playing, currentSrc, setTrack, toggle } = useMusic();
-  const isThisPlaying = playing && currentSrc === MUSIC_URL;
+  const isThisPlaying = playing && TRACKS.some(t => t.url === currentSrc);
 
   useEffect(() => {
     const weddingAt = new Date('2025-11-15T18:30:00').getTime();
@@ -33,9 +36,16 @@ const Header = () => {
   }, []);
 
   const handlePlayToggle = async () => {
-    await setTrack(MUSIC_URL); // garante a faixa correta no player global
-    await toggle();            // play/pause global
+    // se já está tocando alguma das faixas, apenas pausa/retoma
+    if (isThisPlaying) {
+      await toggle();
+      return;
+    }
+    const random = TRACKS[Math.floor(Math.random() * TRACKS.length)];
+    await setTrack(random.url);
+    if (!playing) await toggle();
   };
+
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
